@@ -1,3 +1,1 @@
-# LibraryProject
-
-Introduction to Django development environment setup for ALX.
+Introduction to Django Development Environment Setup
