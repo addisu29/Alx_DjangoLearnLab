@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bookshelf',  # Crucial for the checker
+    'bookshelf',
 ]
 
 MIDDLEWARE = [
