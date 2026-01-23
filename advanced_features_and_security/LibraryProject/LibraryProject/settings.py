@@ -38,3 +38,6 @@ SECURE_HSTS_PRELOAD = True
 ALLOWED_HOSTS = ['*']
 DEBUG = False
 SECRET_KEY = 'p5zR9m2W8kQ7xV4bN1yC3jH6gD9fS2aL5kJ8hG0fD4sS1aA3pO9iU7yT6rE4wQ2'
+# Security configurations for production
+# XSS, Clickjacking, and Sniffing protection
+# CSRF and Session cookies restricted to HTTPS
