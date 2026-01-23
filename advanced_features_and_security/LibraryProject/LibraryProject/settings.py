@@ -1,29 +1,19 @@
-import os
-from pathlib import Path
+# LibraryProject/settings.py
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Set to False in production
+DEBUG = False
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-alx-checker-key'
+# Browser-side protections
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# HTTPS-only cookies (Assumes your production site uses HTTPS)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = []
-
-# Application definition
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'bookshelf',
-    'relationship_app',
-]
-
+# Content Security Policy (CSP) using django-csp
+# First, install it: pip install django-csp
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -32,36 +22,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware', # Add this line
 ]
 
-ROOT_URLCONF = 'LibraryProject.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'LibraryProject.wsgi.application'
-
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Default Primary Key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'bookshelf.CustomUser'
+# CSP Settings
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+ALLOWED_HOSTS = ['*']
+DEBUG = False
+SECRET_KEY = 'p5zR9m2W8kQ7xV4bN1yC3jH6gD9fS2aL5kJ8hG0fD4sS1aA3pO9iU7yT6rE4wQ2'
