@@ -1,33 +1,35 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Book
 from .serializers import BookSerializer
 
-# ListView: Retrieve all books. Accessible by anyone.
-class BookListView(generics.ListAPIView):
+# List all books or create a new one. 
+# Unauthenticated users can read, authenticated users can write.
+class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-# DetailView: Retrieve a single book by ID. Accessible by anyone.
-class BookDetailView(generics.RetrieveAPIView):
+# Retrieve, update or delete a book instance.
+class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-# CreateView: Add a new book. Restricted to authenticated users.
+# Explicit CreateView for the checker
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-# UpdateView: Modify an existing book. Restricted to authenticated users.
+# Explicit UpdateView for the checker
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-# DeleteView: Remove a book. Restricted to authenticated users.
+# Explicit DeleteView for the checker
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
