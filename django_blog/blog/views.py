@@ -1,12 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import (
-    ListView, 
-    DetailView, 
-    CreateView, 
-    UpdateView, 
-    DeleteView
-)
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Post
 
@@ -24,6 +18,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
     template_name = 'blog/post_form.html'
+    success_url = reverse_lazy('post-list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -33,6 +28,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['title', 'content']
     template_name = 'blog/post_form.html'
+    success_url = reverse_lazy('post-list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
