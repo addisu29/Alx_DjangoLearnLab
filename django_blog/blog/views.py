@@ -1,26 +1,41 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .forms import CustomUserCreationForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Post
 
-def register(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('login')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'blog/register.html', {'form': form})
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'posts'
+    ordering = ['-published_date']
 
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        u_form = CustomUserCreationForm(request.POST, instance=request.user)
-        if u_form.is_valid():
-            u_form.save()
-            messages.success(request, 'Your account has been updated!')
-            return redirect('profile')
-    return render(request, 'blog/profile.html')
+class PostDetailView(DetailView):
+    model = Post
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title', 'content']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url = '/'
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
