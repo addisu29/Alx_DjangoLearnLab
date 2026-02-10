@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'django_blog.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": BASE_DIR / "db.sqlite3",
         "USER": "",
         "PASSWORD": "",
@@ -93,15 +93,31 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'USER': 'postgres_user',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'USER': 'postgres_user',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'USER': 'postgres_user',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'USER': 'postgres_user',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     },
 ]
 
