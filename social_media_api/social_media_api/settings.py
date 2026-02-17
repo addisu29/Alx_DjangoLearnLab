@@ -21,7 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-dk=nip4!8+s6u_8w0n*-zdvkxg#+%6x&u6&d=uklghdn@hxfe*')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+import os
+
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+
+# Force False in production
+if not DEBUG:
+    DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -94,14 +100,15 @@ import os
 # ... other settings ...
 
 DATABASES = {
-    'default': dj_database_url.config(
-        # This part is crucial! 
-        # It uses the DATABASE_URL if it exists (on Render), 
-        # but falls back to local SQLite if it doesn't.
-        default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'social_media_db',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
+}
 
 
 # Password validation
